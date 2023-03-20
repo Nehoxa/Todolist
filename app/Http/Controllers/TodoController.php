@@ -5,17 +5,27 @@ namespace App\Http\Controllers;
 use App\Models\Todo;
 use Inertia\Inertia;
 use Spatie\Tags\Tag;
+use Inertia\Response;
+use RuntimeException;
 use App\Models\Priority;
 use Illuminate\Http\Request;
+use InvalidArgumentException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 
 class TodoController extends Controller
 {
     /**
      * Display a listing of the resource.
+     *
+     * @return \Inertia\Response
      */
-    public function index()
+    public function index(): Response
     {
+        if (auth()->user() === null) {
+            throw new RuntimeException('User Must Be Logged In');
+        }
+
         $todos = Todo::where('user_id', auth()->user()->id)->with('tags')->get();
         $priorities = Priority::all();
 
@@ -24,8 +34,10 @@ class TodoController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * 
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'task' => 'required'
@@ -41,25 +53,11 @@ class TodoController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Todo $todo)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Todo $todo)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
+     * 
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Todo $todo)
+    public function update(Request $request, Todo $todo): RedirectResponse
     {
         $request->validate([
             'task' => 'required',
@@ -76,7 +74,13 @@ class TodoController extends Controller
         return Redirect::route('todos.index');
     }
 
-    public function changeStatus(Todo $todo)
+    /**
+     * Change the status of Todo
+     *
+     * @param Todo $todo
+     * @return void
+     */
+    public function changeStatus(Todo $todo): void
     {
         $status = $todo->status = !$todo->status;
         $todo->update([
@@ -84,28 +88,49 @@ class TodoController extends Controller
         ]);
     }
 
-    public function addTag(Request $request, Todo $todo)
+    /**
+     * Add a Tag for Todo
+     *
+     * @param Request $request
+     * @param Todo $todo
+     * @return void
+     */
+    public function addTag(Request $request, Todo $todo): void
     {
         if ($request->tags) {
             $todo->attachTag($request->tags);
         }
     }
 
-    public function deleteTag(Todo $todo, $tag)
+    /**
+     * Delete Tag on Todo
+     *
+     * @param Todo $todo
+     * @param string $tag
+     * @return void
+     */
+    public function deleteTag(Todo $todo, string $tag): void
     {
         $tag = Tag::find($tag);
+
+        if (!$tag instanceof Tag) {
+            throw new InvalidArgumentException("Invalid tag ID provided");
+        }
+        
         $todo->detachTag($tag);
-        $tag->delete();
+        $tag->delete();    
     }
 
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Todo $todo)
-    {
-        $todo->delete();
-
-        return Redirect::route('todos.index');
-    }
+/**
+  * Undocumented function
+  *
+  * @param Todo $todo
+ *  @return \Illuminate\Http\RedirectResponse
+  */
+public function destroy(Todo $todo): RedirectResponse
+{
+    $todo->delete();
+    return Redirect::route('todos.index');
+}
 }

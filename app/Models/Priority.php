@@ -10,6 +10,10 @@ class Priority extends Model
 {
     use HasFactory;
 
+    /**
+     *
+     * @return BelongsToMany<Todo>
+     */
     public function todos(): BelongsToMany
     {
         return $this->BelongsToMany(Todo::class);

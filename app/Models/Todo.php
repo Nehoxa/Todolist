@@ -24,11 +24,19 @@ class Todo extends Model
         'date',
     ];
 
+    /**
+     *
+     * @return HasOne<User>
+     */
     public function User(): HasOne
     {
         return $this->hasOne(User::class);
     }
 
+        /**
+     *
+     * @return HasMany<Priority>
+     */
     public function priority(): HasMany
     {
         return $this->hasMany(Priority::class);

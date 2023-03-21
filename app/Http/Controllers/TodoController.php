@@ -8,6 +8,7 @@ use Spatie\Tags\Tag;
 use Inertia\Response;
 use RuntimeException;
 use App\Models\Priority;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
 use Illuminate\Http\RedirectResponse;
@@ -34,7 +35,7 @@ class TodoController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * 
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request): RedirectResponse
@@ -54,7 +55,7 @@ class TodoController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * 
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Todo $todo): RedirectResponse
@@ -93,13 +94,15 @@ class TodoController extends Controller
      *
      * @param Request $request
      * @param Todo $todo
-     * @return void
+     * @return JsonResponse
      */
-    public function addTag(Request $request, Todo $todo): void
+    public function addTag(Request $request, Todo $todo): JsonResponse
     {
         if ($request->tags) {
             $todo->attachTag($request->tags);
         }
+
+        return response()->json($todo->tags);
     }
 
     /**
@@ -107,30 +110,32 @@ class TodoController extends Controller
      *
      * @param Todo $todo
      * @param string $tag
-     * @return void
+     * @return JsonResponse
      */
-    public function deleteTag(Todo $todo, string $tag): void
+    public function deleteTag(Todo $todo, string $tag): JsonResponse
     {
         $tag = Tag::find($tag);
 
         if (!$tag instanceof Tag) {
             throw new InvalidArgumentException("Invalid tag ID provided");
         }
-        
+
         $todo->detachTag($tag);
-        $tag->delete();    
+        $tag->delete();
+
+        return response()->json($todo->tags);
     }
 
 
-/**
-  * Undocumented function
-  *
-  * @param Todo $todo
- *  @return \Illuminate\Http\RedirectResponse
-  */
-public function destroy(Todo $todo): RedirectResponse
-{
-    $todo->delete();
-    return Redirect::route('todos.index');
-}
+    /**
+     * Delete Todo
+    *
+    * @param Todo $todo
+    *  @return \Illuminate\Http\RedirectResponse
+    */
+    public function destroy(Todo $todo): RedirectResponse
+    {
+        $todo->delete();
+        return Redirect::route('todos.index');
+    }
 }

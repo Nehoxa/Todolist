@@ -20,10 +20,12 @@
         </Link>
       </div>
       <span v-if="todo.note" class="text-slate-400 ml-8 text-base">{{ todo.note }}</span>
-      <div class="flex">
-        <span v-if="todo.date" class="text-slate-400 ml-8 text-base">{{ formatDate(todo.date) }}</span>
-        <span v-if="todo.hour" class="text-slate-400 ml-2 text-base">{{ formatHour(todo.hour) }}</span>
-        <span v-if="todo.tag" class="text-blue-300 ml-2 text-base">#{{ todo.tag }}</span>
+      <div class="flex flex-wrap ml-8">
+        <span v-if="todo.date" class="text-slate-400 mr-2 text-base">{{ formatDate(todo.date) }}</span>
+        <span v-if="todo.hour" class="text-slate-400 mr-2 text-base">{{ formatHour(todo.hour) }}</span>
+        <div v-for="tags in todo.tags">
+          <span class="text-indigo-400 text-base mr-2 font-semibold">#{{ tags.name.en }}</span>
+        </div>
       </div>
       <hr class="mx-6 my-3 border-slate-400">
     </div>

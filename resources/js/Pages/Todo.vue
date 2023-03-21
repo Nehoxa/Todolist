@@ -2,24 +2,9 @@
   <Head title="Todo List" />
 
   <div id="main" @click="show"
-    class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
-    <!-- <div v-if="canLogin" class="sm:fixed sm:top-0 sm:right-0 p-6 text-right">
-      <Link v-if="$page.props.auth.user" :href="route('dashboard')"
-        class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
-      Dashboard</Link>
+    class="relative flex justify-center items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
 
-      <template v-else>
-        <Link :href="route('login')"
-          class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
-        Log in</Link>
-
-        <Link v-if="canRegister" :href="route('register')"
-          class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
-        Register</Link>
-      </template>
-    </div> -->
-
-    <div class="border-2 border-white text-white w-1/3 h-5/6 p-6 m-6 rounded-xl" id="todoContainer" @click="show">
+    <div class="border-2 border-white text-white w-11/12 sm:w-2/3 md:w-3/5 lg:w-2/5 xl:w-1/3 h-5/6 p-6 m-6 rounded-xl" id="todoContainer" @click="show">
       <div class="flex justify-between items-center">
         <h1 class="font-extrabold text-3xl text-red-500 mb-6">Todo</h1>
         <button @click="allTodo">

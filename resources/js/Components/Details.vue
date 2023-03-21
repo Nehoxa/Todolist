@@ -31,7 +31,7 @@
                     placeholder="Note">
                 </div>
 
-                <div class="my-2 p-3 bg-gray-600 rounded-md">
+                <div class="mt-2 p-3 bg-gray-600 rounded-md">
                   <div class="flex items-center">
                     <button @click="resetDate" class="flex" v-if="form.date">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -113,7 +113,7 @@ function resetHour() {
 
 function submit() {
   router.patch(route('todos.update', props.todo), form);
-};
+}
 
 </script>
 

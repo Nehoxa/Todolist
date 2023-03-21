@@ -2,11 +2,10 @@
   <div v-if="showForm" @keyup.enter="submit(), showForm = false">
     <form @submit.prevent="submit" id="todoForm">
       <div class="flex items-center">
-        <!-- <TodoCheckbox/> -->
-        <input ref="inputField" type="text" class="pl-7 py-0 w-full text-lg border-none bg-transparent active:outline-none input-task" focus
-          v-model="form.task">
+        <input ref="inputTask" type="text"
+          class="pl-7 py-0 w-full text-lg border-none bg-transparent active:outline-none input-task" v-model="form.task">
       </div>
-      <input type="text"
+      <input ref="inputNote" type="text"
         class="w-full text-slate-500 ml-5 py-0 border-none text-base bg-transparent shadow-none outline-none input-note"
         placeholder="Ajouter une note" v-model="form.note">
       <hr class="mx-6 my-3 border-slate-400">
@@ -15,12 +14,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onUpdated } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 
-const inputField = ref(null);
+const inputTask = ref(null);
+const inputNote = ref(null);
 
-defineProps({
+const props = defineProps({
   showForm: Boolean,
 })
 
@@ -34,10 +34,9 @@ function submit() {
   form.reset()
 }
 
-onMounted(() => {
-  const inputField = document.getElementById('inputField')
-  if (inputField) {
-    inputField.active()
+onUpdated(() => {
+  if (props.showForm && document.activeElement !== inputTask.value && document.activeElement !== inputNote.value) {
+    inputTask.value.focus();
   }
 });
 

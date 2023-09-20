@@ -3,8 +3,12 @@
 
   <div id="main" @click="show"
     class="relative flex justify-center items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
+    <Link :href="route('logout')" method="post" as="button" class="absolute top-0 right-0 text-white m-4 font-medium hover:underline">
+      Log Out
+    </Link>
 
-    <div class="border-2 border-white text-white w-11/12 sm:w-2/3 md:w-3/5 lg:w-2/5 xl:w-1/3 h-5/6 p-6 m-6 rounded-xl" id="todoContainer" @click="show">
+    <div class="border-2 border-white text-white w-11/12 sm:w-2/3 md:w-3/5 lg:w-2/5 xl:w-1/3 h-5/6 p-6 m-6 rounded-xl"
+      id="todoContainer" @click="show">
       <div class="flex justify-between items-center">
         <h1 class="font-extrabold text-3xl text-red-500 mb-6">Todo</h1>
         <button @click="allTodo">
@@ -26,14 +30,14 @@
 
       <NewTask :showForm="showForm" />
 
-      <FinishTask :todos="todos" :viewFinishTodo="viewFinishTodo"/>
+      <FinishTask :todos="todos" :viewFinishTodo="viewFinishTodo" />
 
     </div>
   </div>
 </template>
 
 <script setup>
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import Task from '@/Components/Task.vue';
 import FinishTask from '@/Components/FinishTask.vue';
@@ -72,7 +76,8 @@ function allTodo() {
   }
 }
 
-.input-note:focus, .input-task:focus {
+.input-note:focus,
+.input-task:focus {
   outline-style: none;
   box-shadow: none;
 }

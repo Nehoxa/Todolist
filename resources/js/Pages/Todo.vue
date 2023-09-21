@@ -1,7 +1,7 @@
 <template>
   <Head title="Todo List" />
 
-  <div id="main" @click="show"
+  <div id="main" @click="show" @keydown.enter="show"
     class="relative flex justify-center items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
     <Link :href="route('logout')" method="post" as="button" class="absolute top-0 right-0 text-white m-4 font-medium hover:underline">
       Log Out
